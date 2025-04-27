@@ -392,7 +392,7 @@ impl<K: ColumnType> Column<K> {
                 let mut inner = Vec::with_capacity(n);
                 for i in 0..n {
                     let source = self.at(i).as_str().unwrap();
-                    let ip: Ipv4Addr = source.parse().unwrap();
+                    let ip: Ipv4Addr = source.parse().unwrap_or(Ipv4Addr::new(0, 0, 0, 0));
                     let mut buffer = [0_u8; 4];
                     buffer.copy_from_slice(&ip.octets());
                     buffer.reverse();
@@ -417,7 +417,9 @@ impl<K: ColumnType> Column<K> {
                 let mut inner = Vec::with_capacity(n);
                 for i in 0..n {
                     let source = self.at(i).as_str().unwrap();
-                    let ip: Ipv6Addr = source.parse().unwrap();
+                    let ip: Ipv6Addr = source
+                        .parse()
+                        .unwrap_or(Ipv6Addr::new(0, 0, 0, 0, 0, 0, 0, 0));
                     inner.extend(&ip.octets());
                 }
 
